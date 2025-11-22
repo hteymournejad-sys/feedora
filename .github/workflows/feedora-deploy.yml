@@ -1,10 +1,7 @@
 name: Feedora Deploy to Production
 
 on:
-  workflow_dispatch:   # به صورت دستی از تب Actions اجرا می‌کنی
-  # اگر خواستی بعدا خودکار روی main هم اجرا بشه، این رو از حالت کامنت دربیار:
-  # push:
-  #   branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -26,7 +23,8 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
-            php artisan migrate --force
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
+            # دستورات زیر را بعد از رفع مشکلات نرم‌افزار می‌تونی دوباره فعال کنی:
+            # php artisan migrate --force
+            # php artisan config:cache
+            # php artisan route:cache
+            # php artisan view:cache
