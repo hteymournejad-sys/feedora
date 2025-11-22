@@ -1,0 +1,35 @@
+name: Feedora Deploy to Production
+
+on:
+  workflow_dispatch:   # به صورت دستی از تب Actions اجرا می‌کنی
+  # اگر خواستی بعداً با هر push روی main اجرا بشه این بخش رو از حالت کامنت در بیار:
+  # push:
+  #   branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /var/www/feedora
+            git fetch --all
+            git reset --hard origin/main
+            composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            # اگر نیاز داری سرویس‌ها ریستارت بشن (nginx/php-fpm/queue)، اینجا اضافه کن:
+            # sudo systemctl restart php8.2-fpm
+            # sudo systemctl restart nginx
