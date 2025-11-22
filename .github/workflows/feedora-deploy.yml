@@ -23,8 +23,10 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
-            # دستورات زیر را بعد از رفع مشکلات نرم‌افزار می‌تونی دوباره فعال کنی:
-            # php artisan migrate --force
-            # php artisan config:cache
-            # php artisan route:cache
-            //# php artisan view:cache
+            php artisan migrate --force || true
+            php artisan config:cache || true
+            php artisan route:cache || true
+            php artisan view:cache || true
+            # اگر نیاز داری سرویس‌ها ریستارت بشن (nginx/php-fpm/queue)، اینجا اضافه کن:
+            # sudo systemctl restart php8.2-fpm
+            # sudo systemctl restart nginx
