@@ -2,7 +2,7 @@ name: Feedora Deploy to Production
 
 on:
   workflow_dispatch:   # به صورت دستی از تب Actions اجرا می‌کنی
-  # اگر خواستی بعداً با هر push روی main اجرا بشه این بخش رو از حالت کامنت در بیار:
+  # اگر خواستی بعدا خودکار روی main هم اجرا بشه، این رو از حالت کامنت دربیار:
   # push:
   #   branches: [ "main" ]
 
@@ -30,6 +30,3 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            # اگر نیاز داری سرویس‌ها ریستارت بشن (nginx/php-fpm/queue)، اینجا اضافه کن:
-            # sudo systemctl restart php8.2-fpm
-            # sudo systemctl restart nginx
